@@ -1,4 +1,4 @@
-from credentials import MAPS_API_KEY
+from Maps.credentials import MAPS_API_KEY
 from prettyprinter import pprint as pp
 import requests
 
@@ -90,13 +90,15 @@ def compute_duration_matrix(postcode_list):
         row_elements_list = row_dict["elements"]
         duration_list = []
         for row_element_dict in row_elements_list:
-            duration = row_element_dict["duration"]["value"]
+            duration = row_element_dict["duration"]["value"] if row_element_dict["duration"]["value"] > 0 else -1
             duration_list.append(duration)
         duration_matrix.append(duration_list)
 
-    pp(duration_matrix)
+    return duration_matrix
 
 
 if __name__ == '__main__':
-    postcode_list = ["120359", "120462", "120379", "120343", "120332", "120429", "667970", "679910", "618495", "641682"]
+    profitable_companies = ["120359", "120462", "120379", "120343", "120332", "120429"]
+    unprofitable_companies = ["667970", "679910", "618495", "641682"]
+    postcode_list = unprofitable_companies + profitable_companies
     compute_duration_matrix(postcode_list=postcode_list)
