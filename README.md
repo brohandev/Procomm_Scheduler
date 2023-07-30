@@ -2,7 +2,7 @@
 
 ### Workflow
 
-1. Install all prerequsite libraries as stated by my imported libraries
+1. Install all prerequsite libraries as stated by my imported libraries. I have omitted my MAPS_API_KEY from the Maps folder. Kindly replace the placeholder value with your own Google MAPS API Key.
 2. Open `./Procomm_Scheduler/Documents/input.xslx` Excel file
     - Navigate to `COMPANIES` sheet and insert postal codes of the companies under the appropriate headers (MORE PROFITABLE COMPANIES or LESS PROFITABLE COMPANIES)
     - Navigate to `REQUIREMENTS` sheet and insert the period number Walter would like to have his luncha and tea breaks. The same period number will be used for all of the 8 days. Insert period number under the appropriate headers (LUNCH PERIOD and TEA PERIOD)
