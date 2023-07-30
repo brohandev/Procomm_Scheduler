@@ -1,6 +1,7 @@
 from Maps.credentials import MAPS_API_KEY
 from prettyprinter import pprint as pp
 import requests
+from sys import maxsize
 
 
 ONE_MAPS_BASE_URL = "https://developers.onemap.sg/commonapi/search"
@@ -90,7 +91,7 @@ def compute_duration_matrix(postcode_list):
         row_elements_list = row_dict["elements"]
         duration_list = []
         for row_element_dict in row_elements_list:
-            duration = row_element_dict["duration"]["value"] if row_element_dict["duration"]["value"] > 0 else -1
+            duration = row_element_dict["duration"]["value"] if row_element_dict["duration"]["value"] > 0 else maxsize
             duration_list.append(duration)
         duration_matrix.append(duration_list)
 
