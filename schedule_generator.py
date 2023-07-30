@@ -1,7 +1,6 @@
-from Documents.excel_controller import retrieve_company_postcodes, retrieve_break_times
+from Documents.excel_controller import retrieve_company_postcodes, retrieve_break_times, write_to_excel, clean_excel
 from itertools import permutations
 from Maps.duration_matrix import compute_duration_matrix
-from prettyprinter import pprint as pp
 from sys import maxsize
 
 # initialize global variables
@@ -14,6 +13,10 @@ MAX_COST_DAILY = (11 * 60 * 60) - (60 + 45) * 60  # 11hr - lunch(1hr) - tea (45m
 SCHEDULE_DAYS = 8
 
 
+"""
+    Calculates (n -1) Hamiltonian paths between all source arguement and all other vertices, and shortlists the path 
+    for each vertex with the shortest duration. 
+"""
 def shortest_tour(matrix, source):
     # store all vertices apart from source vertex
     vertex = []
@@ -45,7 +48,14 @@ def shortest_tour(matrix, source):
     return [shortest_path, min_path]
 
 
+"""
+    Retrieves pertinent information from input.xslx, cleans up output.xslx, and creates a mapping between postal codes 
+    of companies and node_indices for easier reference in other methods 
+"""
 def preprocessing():
+    # ensure past output is cleared from the excel output.xslx sheet
+    clean_excel()
+
     # retrieve postal codes from input.xslx
     profitable_companies, unprofitable_companies = retrieve_company_postcodes()
 
@@ -63,7 +73,10 @@ def preprocessing():
 
     return profitable_companies, unprofitable_companies, node_postalcode_mapping, matrix
 
-
+"""
+    Inserts periods for more profitable companies, after computing the shortest Hamiltonian path between them, into 
+    the baseline schedule. 
+"""
 def schedule_filler(path, sublist):
     sublist_collection = []
     for a_index in range(len(path)):
@@ -91,7 +104,9 @@ def schedule_filler(path, sublist):
 
     return values_to_add, insertion_point
 
-
+"""
+    Main function to generate the 8-day schedule and write onto the output.xslx.
+"""
 def schedule_generator():
     profitable_companies, unprofitable_companies, node_postalcode_mapping, matrix = preprocessing()
 
@@ -157,7 +172,6 @@ def schedule_generator():
     # convert company_indices back to postal code mappings
     # append lunch and tea timeslots
     lunch_period, tea_period = retrieve_break_times()
-    final_schedule = []
     for index in range(len(schedule)):
         final_company_path = []
         company_path = schedule[index][0].copy()
@@ -171,9 +185,7 @@ def schedule_generator():
 
         duration += LUNCH_COST + TEA_COST
 
-        final_schedule.append([final_company_path, duration])
-
-    pp(final_schedule)
+        write_to_excel(final_company_path, duration)
 
 
 if __name__ == '__main__':

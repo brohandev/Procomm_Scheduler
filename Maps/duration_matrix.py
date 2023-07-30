@@ -9,6 +9,9 @@ GOOGLE_MAPS_BASE_URL = "https://maps.googleapis.com/maps/api/"
 DISTANCE_MATRIX_URI = "distancematrix"
 
 
+"""
+    Generates latitude and longitude coordinates for each postal code inside input.xslx. Leverages OneMaps API.
+"""
 def postcode_to_coordinates(postcode_list):
     address_coordinate_list = []
 
@@ -41,6 +44,9 @@ def postcode_to_coordinates(postcode_list):
     return address_coordinate_list
 
 
+"""
+    Generates latitude and longitude coordinates for each postal code inside input.xslx. Leverages OneMaps API.
+"""
 def form_request_url(url, request_dict):
     for key in request_dict:
         if key == "parameters":
@@ -58,6 +64,10 @@ def form_request_url(url, request_dict):
     return url
 
 
+"""
+    Generates 2D adjacency matrix containing duration values, full meshed between all postal codes. Self-loops have been 
+    assigned INT MAX value. Leverages Google Maps API.
+"""
 def compute_duration_matrix(postcode_list):
     address_coordinate_list = postcode_to_coordinates(postcode_list=postcode_list)
 
